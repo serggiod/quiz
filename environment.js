@@ -11,7 +11,7 @@ var environment = function(){
         // Configuracion del servidor.
         name:'Quiz',
         subn:'Si lo sabes ¡Juega!',
-        desc:'El portal donde podras crear tus propios juegos!',
+        desc:'el juego de las preguntas',
         keyw:'Quiz, Juego, Pregunta, Respuesta',
         env :'production',
         etag:false,

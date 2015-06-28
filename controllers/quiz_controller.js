@@ -4,7 +4,7 @@ exports.question = function(req,res,next) {
 	res.render('quizes/question',{
 		layout:'layout',
 		title:env.name,
-		description:'El juego de las preguntas.',
+		description:env.desc,
 		pregunta:'¿Cuál es la capital de Italia?'
 	});
 };
@@ -13,7 +13,7 @@ exports.answer = function(req,res,next) {
 	// Proceso.
 	var data = {
 		title:env.name,
-		description:'El juego de las preguntas.',
+		description:env.desc,
 		resultado:''
 	};
 
