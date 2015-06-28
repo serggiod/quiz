@@ -1,9 +1,15 @@
-var express = require('express');
-var router = express.Router();
+var express          = require('express');
+var router           = express.Router();
+var index_controller = require('../controllers/index_controller');
+var quiz_controller  = require('../controllers/quiz_controller');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+/* GET: Ir a la página de inicio. */
+router.get('/',index_controller.index);
+
+/* GET: Ir la página de pregunta. */
+router.get('/quizes/question',quiz_controller.question);
+
+/* GET: Ir la página de respuesta. */
+router.get('/quizes/answer',quiz_controller.answer);
 
 module.exports = router;

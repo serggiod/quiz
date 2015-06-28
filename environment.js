@@ -4,14 +4,14 @@ var environment = function(){
     /* Configurar variables. */
 
     var host  = 'localhost';
-    var port  = '8000';
+    var port  = '3000';
     var prot  = 'http';
 
     return {
         // Configuracion del servidor.
-        name:'Quiz - Preguntas',
+        name:'Quiz',
         subn:'Si lo sabes ¡Juega!',
-        desc:'Portal de preguntas y respuestas.',
+        desc:'El portal donde podras crear tus propios juegos!',
         keyw:'Quiz, Juego, Pregunta, Respuesta',
         env :'production',
         etag:false,
