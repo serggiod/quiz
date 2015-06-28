@@ -12,4 +12,8 @@ router.get('/quizes/question',quiz_controller.question);
 /* GET: Ir la página de respuesta. */
 router.get('/quizes/answer',quiz_controller.answer);
 
+/* GET: Ir la página de créditos. */
+router.get('/author',index_controller.author);
+
+
 module.exports = router;

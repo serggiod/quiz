@@ -6,3 +6,10 @@ exports.index = function(req,res,next) {
 		description:env.desc
 	});
 };
+
+exports.author = function(req,res,next) {
+	res.render('author',{
+		title:env.name,
+		description:env.desc
+	});
+};
