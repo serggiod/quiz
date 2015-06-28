@@ -13,8 +13,10 @@ var env   = require('../environment')();
  * Get port from environment and store in Express.
  */
 
+/*No Olvidar Heroku asigna arbitrariamente el puerto de respuesta. */
 var port = normalizePort(process.env.PORT || env.port);
 app.set('port',port);
+
 //app.set('ETag',env.etag);
 //app.set('env',env.env);
 app.set('x-powered-by',env.xpby);
