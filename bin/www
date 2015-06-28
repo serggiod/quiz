@@ -4,16 +4,20 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app   = require('../app');
 var debug = require('debug')('quiz:server');
-var http = require('http');
+var http  = require('http');
+var env   = require('../environment')();
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+var port = normalizePort(env.port);
+app.set('port',port);
+app.set('ETag',env.etag);
+app.set('env',env.env);
+app.set('x-powered-by',env.xpby);
 
 /**
  * Create HTTP server.
