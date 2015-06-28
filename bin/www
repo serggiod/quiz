@@ -13,10 +13,10 @@ var env   = require('../environment')();
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(env.port);
+var port = normalizePort(process.env.PORT || env.port);
 app.set('port',port);
-app.set('ETag',env.etag);
-app.set('env',env.env);
+//app.set('ETag',env.etag);
+//app.set('env',env.env);
 app.set('x-powered-by',env.xpby);
 
 /**
