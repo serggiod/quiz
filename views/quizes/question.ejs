@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %>: <%= description %></h1>
-    <form method="get" action="/quizes/answer">
-    <p><strong>Pregunta:</strong><%= pregunta %></p>
-    <p><strong>Respuesta:</strong><input type="text" name="respuesta" value="Responde aquí..."/></p>
-    <p><strong>Acción:</strong> <input type="submit" value="Enviar"/></p>
-  </body>
-</html>
+<form method="get" action="/quizes/answer">
+<p><strong>Pregunta:</strong><%= pregunta %></p>
+<p><strong>Respuesta:</strong><input type="text" name="respuesta" value="Responde aquí..."/></p>
+<p><strong>Acción:</strong> <input type="submit" value="Enviar"/></p>

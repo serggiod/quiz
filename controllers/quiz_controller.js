@@ -2,6 +2,7 @@ var env = require('../environment')();
 
 exports.question = function(req,res,next) {
 	res.render('quizes/question',{
+		layout:'layout',
 		title:env.name,
 		description:'El juego de las preguntas.',
 		pregunta:'¿Cuál es la capital de Italia?'
