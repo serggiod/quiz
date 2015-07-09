@@ -3,10 +3,25 @@ var path = require('path');
 // Cargar modelo ORM.
 var Sequelize = require('sequelize');
 
-// Usar DB SQLite.
-var sequelize = new Sequelize(null,null,null,{
-	dialect:'sqlite',
-	storage:'quiz.sqlite'
+// Matchear la url de la DB.
+var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
+var dbname = (url[6] || null);
+var dbuser = (url[2] || null);
+var dbpswd = (url[3] || null);
+var dbprot = (url[1] || null);
+var dbdial = (url[1] || null);
+var dbport = (url[5] || null);
+var dbhost = (url[4] || null);
+var dbstor = process.env.DATABASE_STORAGE;
+
+// Usar una DB.
+var sequelize = new Sequelize(dbname,dbuser,dbpswd,{
+	protocol  :dbprot,
+	host      :dbhost,
+	port      :dbport,
+	dialect   :dbdial,
+	storage   :dbstor,
+	omitNull  :true
 });
 
 // Importar la definición de la tabla quiz.
