@@ -30,6 +30,22 @@ exports.index = function(req,res,next) {
 
 };
 
+exports.find = function(req,res,next) {
+
+	model.Quiz.all()
+		.then(function(quizes){
+			res.render('quizes/index',{
+				layout:'layout',
+				title:env.name,
+				description:env.desc,
+				quizes:quizes
+			});	
+
+		})
+		.catch(function(error){ next(error); });
+
+};
+
 exports.question = function(req,res) {
 
 	// Proceso.
