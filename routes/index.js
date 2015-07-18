@@ -6,11 +6,18 @@ var quiz_controller  = require('../controllers/quiz_controller');
 /* GET: Ir a la página de inicio. */
 router.get('/',index_controller.index);
 
-/* GET: Ir la página de pregunta. */
-router.get('/quizes/question',quiz_controller.question);
+/* GET: Ir la lista de preguntas. */
+router.get('/quizes',quiz_controller.index);
+
+
+// PARAMS: Cuando llegue quizId ejecutar load:
+router.param('quizId',quiz_controller.load);
+
+/* GET: Ir la página de una pregunta. */
+router.get('/quizes/:quizId(\\d+)',quiz_controller.question);
 
 /* GET: Ir la página de respuesta. */
-router.get('/quizes/answer',quiz_controller.answer);
+router.get('/quizes/:quizId(\\d+)/answer',quiz_controller.answer);
 
 /* GET: Ir la página de créditos. */
 router.get('/author',index_controller.author);

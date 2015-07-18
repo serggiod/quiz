@@ -1,35 +1,69 @@
 var model = require('../models/models');
 var env   = require('../environment')();
 
-exports.question = function(req,res,next) {
+exports.load  = function(req,res,next,quizId){
+	model.Quiz.findById(quizId)
+		.then(function(quizes){
+			if(quizes){
+				req.quizes = quizes;
+				next();
+			} else {
+				next(new Error('No existe el id '+quizId));
+			}
+		})
+		.catch(function(error){ next(error); });
+};
+
+exports.index = function(req,res,next) {
 
 	model.Quiz.all()
 		.then(function(quizes){
-			res.render('quizes/question',{
+			res.render('quizes/index',{
 				layout:'layout',
 				title:env.name,
 				description:env.desc,
-				pregunta:quizes[0].pregunta
-			});
-		});
+				quizes:quizes
+			});	
+
+		})
+		.catch(function(error){ next(error); });
+
 };
 
-exports.answer = function(req,res,next) {
+exports.question = function(req,res) {
+
 	// Proceso.
-	var data = {
+	data = {
+		layout:'layout',
 		title:env.name,
 		description:env.desc,
+		id:req.quizes.id,
+		pregunta:req.quizes.pregunta
+	};
+
+	// Salida.
+	res.render('quizes/question',data);
+
+};
+
+exports.answer = function(req,res) {
+
+	// Proceso.
+	data = {
+		layout:'layout',
+		title:env.name,
+		description:env.desc,
+		id:req.quizes.id,
 		resultado:''
 	};
-	model.Quiz.all()
-		.then(function(quizes){
-			if(req.query.respuesta===quizes[0].respuesta){
-				data.resultado = 'Correcto';
-			} else {
-				data.resultado = 'Incorrecto';
-			}
 
-			// Salida.
-			res.render('quizes/answer',data);
-		});
+	if(req.query.respuesta===req.quizes.respuesta){
+		data.resultado = 'Correcto';
+	} else {
+		data.resultado = 'Incorrecto';
+	}
+
+	// Salida.
+	res.render('quizes/answer',data);
+
 };
