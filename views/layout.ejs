@@ -6,15 +6,18 @@
     <link rel='stylesheet' type='text/css' href='/stylesheets/style.css' />
     <link rel='stylesheet' type='text/css' media='(min-width:530px) and (min-device-width:481px)' href='/stylesheets/wide.css' />
     <link rel='stylesheet' type='text/css' media='only screen and (max-width:480px)' href='/stylesheets/phone.css' />
-    <form>
-      <input type="text" name="findString" value="Buscar una pregunta..."/>
-      <input type="submit" name="findButton" value="Buscar"/>
-    </form>
-  </head>
+   </head>
   <body>
   	<div id="page-wrap">
+
+      <form id="formSearch" method="POST" action="/quizes">
+        <input type="text" name="search" placeholder="Buscar una pregunta..."/>
+        <input type="submit" value="Buscar"/>
+      </form>
+
   		<header class="main" id="h1">
   			<h2><%= title %><span>: <%= description %></span></h2>
+      
   		</header>
   		
   		<nav class="main" id="n1" role="navigation">

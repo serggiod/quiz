@@ -26,23 +26,40 @@ exports.index = function(req,res,next) {
 			});	
 
 		})
-		.catch(function(error){ next(error); });
+		.catch(function(){
+			res.redirect('/');
+		});
 
 };
 
-exports.find = function(req,res,next) {
+exports.search = function(req,res,next) {
 
-	model.Quiz.all()
+	var string = ('%'+req.body.search+'%').replace(/\ /g,'%');
+
+	model.Quiz.findAll({
+			where:{pregunta:{$like:string}},
+			order:[['pregunta','ASC']]
+		})
 		.then(function(quizes){
-			res.render('quizes/index',{
+
+			// Proceso.
+			data = {
 				layout:'layout',
 				title:env.name,
 				description:env.desc,
-				quizes:quizes
-			});	
+				search:req.body.search,
+				quizes:{}
+			};
+
+			if(quizes) data.quizes=quizes;
+
+			// Salida.
+			res.render('quizes/search',data);
 
 		})
-		.catch(function(error){ next(error); });
+		.catch(function(){
+			res.redirect('/quizes');
+		});
 
 };
 

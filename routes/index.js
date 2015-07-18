@@ -9,8 +9,8 @@ router.get('/',index_controller.index);
 /* GET: Ir la lista de preguntas. */
 router.get('/quizes',quiz_controller.index);
 
-/* POST: Ir la lista de preguntas a partir de na busqueda. */
-router.post('/quizes',quiz_controller.find);
+/* POST: Ir a la lsita de preguntas con una busqueda. */
+router.post('/quizes',quiz_controller.search);
 
 
 // PARAMS: Cuando llegue quizId ejecutar load:
