@@ -22,6 +22,14 @@ router.get('/quizes/:quizId(\\d+)',quiz_controller.question);
 /* GET: Ir la página de respuesta. */
 router.get('/quizes/:quizId(\\d+)/answer',quiz_controller.answer);
 
+
+/* GET: Ir la página de nueva pregunta(Formulario). */
+router.get('/quizes/nuevo',quiz_controller.nuevoGET);
+
+/* POST: Ir la página de nueva pregunta(Carga). */
+router.post('/quizes/nuevo',quiz_controller.nuevoPOST);
+
+
 /* GET: Ir la página de créditos. */
 router.get('/author',index_controller.author);
 

@@ -100,3 +100,35 @@ exports.answer = function(req,res) {
 	res.render('quizes/answer',data);
 
 };
+
+exports.nuevoGET = function(req,res) {
+
+	// Proceso.
+	quizes = model.Quiz.build({
+		pregunta:'Nueva pregunta...',
+		respuesta:'Nueva respuesta...'
+	});
+
+	data = {
+		layout:'layout',
+		title:env.name,
+		description:env.desc,
+		quizes:quizes
+	};
+
+	// Salida.
+	res.render('quizes/nuevo',data);
+
+};
+
+exports.nuevoPOST = function(req,res) {
+
+	// Proceso.
+	var quiz = model.Quiz;
+	quiz.create(req.body.quizes)
+	.then(function(){
+		console.log(1);
+		res.redirect('/quizes');	
+	});
+
+};
