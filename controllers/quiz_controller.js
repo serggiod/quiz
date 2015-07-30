@@ -22,7 +22,8 @@ exports.index = function(req,res,next) {
 				layout:'layout',
 				title:env.name,
 				description:env.desc,
-				quizes:quizes
+				quizes:quizes,
+				errors:[]
 			});	
 
 		})
@@ -48,7 +49,8 @@ exports.search = function(req,res,next) {
 				title:env.name,
 				description:env.desc,
 				search:req.body.search,
-				quizes:{}
+				quizes:{},
+				errors:[]
 			};
 
 			if(quizes) data.quizes=quizes;
@@ -71,7 +73,8 @@ exports.question = function(req,res) {
 		title:env.name,
 		description:env.desc,
 		id:req.quizes.id,
-		pregunta:req.quizes.pregunta
+		pregunta:req.quizes.pregunta,
+		errors:[]
 	};
 
 	// Salida.
@@ -87,7 +90,8 @@ exports.answer = function(req,res) {
 		title:env.name,
 		description:env.desc,
 		id:req.quizes.id,
-		resultado:''
+		resultado:'',
+		errors:[]
 	};
 
 	if(req.query.respuesta===req.quizes.respuesta){
@@ -113,7 +117,8 @@ exports.nuevoGET = function(req,res) {
 		layout:'layout',
 		title:env.name,
 		description:env.desc,
-		quizes:quizes
+		quizes:quizes,
+		errors:[]
 	};
 
 	// Salida.
@@ -124,11 +129,51 @@ exports.nuevoGET = function(req,res) {
 exports.nuevoPOST = function(req,res) {
 
 	// Proceso.
-	var quiz = model.Quiz;
-	quiz.create(req.body.quizes)
-	.then(function(){
-		console.log(1);
-		res.redirect('/quizes');	
-	});
+	var quiz = model.Quiz.build(req.body.quizes);
+
+	quiz
+		.validate()
+		.then(function(err){
+			if(err){
+
+				data = {
+					layout:'layout',
+					title:env.name,
+					description:env.desc,
+					quizes:quiz,
+					errors:err.errors
+				};
+
+				// Salida.
+				res.render('quizes/nuevo',data);
+
+			} else {
+				
+				quiz
+					.save({fields:['pregunta','respuesta']})
+					.then(function(){
+						res.redirect('/quizes');		
+					});
+				
+			}
+		});
+
+		/*
+		.error(function(msg,err){
+			console.log(err);
+
+			quizes = model.Quiz.build(req.body.quizes);
+
+			data = {
+				layout:'layout',
+				title:env.name,
+				description:env.desc,
+				quizes:quizes
+			};
+
+			// Salida.
+			res.render('quizes/nuevo',data);
+		});
+		*/
 
 };
