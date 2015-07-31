@@ -29,11 +29,17 @@ router.get('/quizes/nuevo',quiz_controller.nuevoGET);
 /* POST: Ir la página de nueva pregunta (Carga). */
 router.post('/quizes/nuevo',quiz_controller.nuevoPOST);
 
+
 /* GET: Ir a la página de editar pregunta (formulario). */
 router.get('/quizes/:quizId(\\d+)/editar',quiz_controller.editarGET);
 
 /* PUT: Ir a la página de editar pregunta (carga). */
 router.put('/quizes/:quizId(\\d+)',quiz_controller.editarPUT);
+
+
+/* DELETE: Ir a la página de eliminar pregunta (proceso). */
+router.delete('/quizes/:quizId(\\d+)',quiz_controller.eliminarDELETE);
+
 
 /* GET: Ir la página de créditos. */
 router.get('/author',index_controller.author);

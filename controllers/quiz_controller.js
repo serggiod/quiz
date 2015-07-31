@@ -212,3 +212,19 @@ exports.editarPUT = function(req,res){
 		});
 
 };
+
+exports.eliminarDELETE = function(req,res,next){
+
+		req.quizes.destroy()
+			.then(function(){
+
+				res.redirect('/quizes');
+
+			})
+			.catch(function(err){
+			
+				next(err);
+			
+			});
+
+};
