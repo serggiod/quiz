@@ -158,22 +158,57 @@ exports.nuevoPOST = function(req,res) {
 			}
 		});
 
-		/*
-		.error(function(msg,err){
-			console.log(err);
+};
 
-			quizes = model.Quiz.build(req.body.quizes);
+exports.editarGET = function(req,res){
 
-			data = {
-				layout:'layout',
-				title:env.name,
-				description:env.desc,
-				quizes:quizes
-			};
+	// Proceso.
+	quizes = req.quizes;
 
-			// Salida.
-			res.render('quizes/nuevo',data);
+	data = {
+		layout:'layout',
+		title:env.name,
+		description:env.desc,
+		quizes:quizes,
+		errors:[]
+	};
+
+	// Salida.
+	res.render('quizes/editar',data);
+
+};
+
+exports.editarPUT = function(req,res){
+
+	// Proceso.
+	req.quizes.pregunta = req.body.quizes.pregunta;
+	req.quizes.respuesta = req.body.quizes.respuesta;
+
+	req.quizes
+		.validate()
+		.then(function(err){
+			if(err){
+
+				data = {
+					layout:'layout',
+					title:env.name,
+					description:env.desc,
+					quizes:req.quizes,
+					errors:err.errors
+				};
+
+				// Salida.
+				res.render('quizes/editar',data);
+
+			} else {
+				
+				req.quizes
+					.save({fields:['pregunta','respuesta']})
+					.then(function(){
+						res.redirect('/quizes');		
+					});
+				
+			}
 		});
-		*/
 
 };
