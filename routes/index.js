@@ -41,6 +41,9 @@ router.put('/quizes/:quizId(\\d+)',quiz_controller.editarPUT);
 router.delete('/quizes/:quizId(\\d+)',quiz_controller.eliminarDELETE);
 
 
+/* POST: Filtrar, ir a la página de filtrar preguntas (proceso). */
+router.post('/quizes/tema/:tema',quiz_controller.filtrarPOST);
+
 /* GET: Ir la página de créditos. */
 router.get('/author',index_controller.author);
 

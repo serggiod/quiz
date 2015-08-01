@@ -16,15 +16,33 @@ exports.load  = function(req,res,next,quizId){
 
 exports.index = function(req,res,next) {
 
-	model.Quiz.all()
-		.then(function(quizes){
-			res.render('quizes/index',{
-				layout:'layout',
-				title:env.name,
-				description:env.desc,
-				quizes:quizes,
-				errors:[]
-			});	
+	model.Quiz.findAll({
+			attributes:['tema'],
+			group:['tema'],
+			order:[['tema']]
+		})
+		.then(function(temas){
+
+			var Temas = [];
+			for(i in temas){
+				Temas[i] = temas[i].tema; 
+			}
+
+			model.Quiz.all()
+				.then(function(quizes){
+					res.render('quizes/index',{
+						layout:'layout',
+						title:env.name,
+						description:env.desc,
+						quizes:quizes,
+						errors:[],
+						temas:Temas,
+					});	
+
+				})
+				.catch(function(){
+					res.redirect('/');
+				});
 
 		})
 		.catch(function(){
@@ -35,32 +53,50 @@ exports.index = function(req,res,next) {
 
 exports.search = function(req,res,next) {
 
-	var string = ('%'+req.body.search+'%').replace(/\ /g,'%');
-
 	model.Quiz.findAll({
-			where:{pregunta:{$like:string}},
-			order:[['pregunta','ASC']]
+			attributes:['tema'],
+			group:['tema'],
+			order:[['tema']]
 		})
-		.then(function(quizes){
+		.then(function(temas){
 
-			// Proceso.
-			data = {
-				layout:'layout',
-				title:env.name,
-				description:env.desc,
-				search:req.body.search,
-				quizes:{},
-				errors:[]
-			};
+			var Temas = [];
+			for(i in temas){
+				Temas[i] = temas[i].tema; 
+			}
 
-			if(quizes) data.quizes=quizes;
+			var string = ('%'+req.body.search+'%').replace(/\ /g,'%');
 
-			// Salida.
-			res.render('quizes/search',data);
+			model.Quiz.findAll({
+					where:{pregunta:{$like:string}},
+					order:[['pregunta','ASC']]
+				})
+				.then(function(quizes){
+
+					// Proceso.
+					data = {
+						layout:'layout',
+						title:env.name,
+						description:env.desc,
+						search:req.body.search,
+						quizes:{},
+						errors:[],
+						temas:Temas
+					};
+
+					if(quizes) data.quizes=quizes;
+
+					// Salida.
+					res.render('quizes/search',data);
+
+				})
+				.catch(function(){
+					res.redirect('/quizes');
+				});
 
 		})
 		.catch(function(){
-			res.redirect('/quizes');
+			res.redirect('/');
 		});
 
 };
@@ -107,110 +143,184 @@ exports.answer = function(req,res) {
 
 exports.nuevoGET = function(req,res) {
 
-	// Proceso.
-	quizes = model.Quiz.build({
-		pregunta:'Nueva pregunta...',
-		respuesta:'Nueva respuesta...'
-	});
+	model.Quiz.findAll({
+			attributes:['tema'],
+			group:['tema'],
+			order:[['tema']]
+		})
+		.then(function(temas){
 
-	data = {
-		layout:'layout',
-		title:env.name,
-		description:env.desc,
-		quizes:quizes,
-		errors:[]
-	};
+			// Proceso.
 
-	// Salida.
-	res.render('quizes/nuevo',data);
+			var Temas = [];
+			for(i in temas){
+				Temas[i] = temas[i].tema; 
+			}
+
+			quizes = model.Quiz.build({
+				pregunta:'Nueva pregunta...',
+				respuesta:'Nueva respuesta...'
+			});
+
+			data = {
+				layout:'layout',
+				title:env.name,
+				description:env.desc,
+				quizes:quizes,
+				errors:[],
+				temas:Temas
+			};
+
+			// Salida.
+			res.render('quizes/nuevo',data);
+
+		})
+		.catch(function(){
+			res.redirect('/');
+		});
 
 };
 
 exports.nuevoPOST = function(req,res) {
 
-	// Proceso.
-	var quiz = model.Quiz.build(req.body.quizes);
+	model.Quiz.findAll({
+			attributes:['tema'],
+			group:['tema'],
+			order:[['tema']]
+		})
+		.then(function(temas){
 
-	quiz
-		.validate()
-		.then(function(err){
-			if(err){
+			// Proceso.
 
-				data = {
-					layout:'layout',
-					title:env.name,
-					description:env.desc,
-					quizes:quiz,
-					errors:err.errors
-				};
-
-				// Salida.
-				res.render('quizes/nuevo',data);
-
-			} else {
-				
-				quiz
-					.save({fields:['pregunta','respuesta']})
-					.then(function(){
-						res.redirect('/quizes');		
-					});
-				
+			var Temas = [];
+			for(i in temas){
+				Temas[i] = temas[i].tema; 
 			}
-		});
 
+			// Proceso.
+			var quiz = model.Quiz.build(req.body.quizes);
+
+			quiz
+				.validate()
+				.then(function(err){
+					if(err){
+
+						data = {
+							layout:'layout',
+							title:env.name,
+							description:env.desc,
+							quizes:quiz,
+							errors:err.errors,
+							temas:Temas
+						};
+
+						// Salida.
+						res.render('quizes/nuevo',data);
+
+					} else {
+						
+						quiz
+							.save({fields:['tema','pregunta','respuesta']})
+							.then(function(){
+								res.redirect('/quizes');		
+							});
+						
+					}
+				});
+		})
+		.catch(function(){
+			res.redirect('/');
+		});
 };
 
 exports.editarGET = function(req,res){
 
-	// Proceso.
-	quizes = req.quizes;
+	model.Quiz.findAll({
+			attributes:['tema'],
+			group:['tema'],
+			order:[['tema']]
+		})
+		.then(function(temas){
 
-	data = {
-		layout:'layout',
-		title:env.name,
-		description:env.desc,
-		quizes:quizes,
-		errors:[]
-	};
+			// Proceso.
 
-	// Salida.
-	res.render('quizes/editar',data);
+			var Temas = [];
+			for(i in temas){
+				Temas[i] = temas[i].tema; 
+			}
+			
+			quizes = req.quizes;
 
+			data = {
+				layout:'layout',
+				title:env.name,
+				description:env.desc,
+				quizes:quizes,
+				errors:[],
+				temas:Temas
+			};
+
+			// Salida.
+			res.render('quizes/editar',data);
+
+		})
+		.catch(function(){
+			res.redirect('/');
+		});
 };
 
 exports.editarPUT = function(req,res){
 
-	// Proceso.
-	req.quizes.pregunta = req.body.quizes.pregunta;
-	req.quizes.respuesta = req.body.quizes.respuesta;
+	model.Quiz.findAll({
+			attributes:['tema'],
+			group:['tema'],
+			order:[['tema']]
+		})
+		.then(function(temas){
 
-	req.quizes
-		.validate()
-		.then(function(err){
-			if(err){
+			// Proceso.
 
-				data = {
-					layout:'layout',
-					title:env.name,
-					description:env.desc,
-					quizes:req.quizes,
-					errors:err.errors
-				};
-
-				// Salida.
-				res.render('quizes/editar',data);
-
-			} else {
-				
-				req.quizes
-					.save({fields:['pregunta','respuesta']})
-					.then(function(){
-						res.redirect('/quizes');		
-					});
-				
+			var Temas = [];
+			for(i in temas){
+				Temas[i] = temas[i].tema; 
 			}
-		});
+			// Proceso.
+			req.quizes.tema = req.body.quizes.tema;
+			req.quizes.pregunta = req.body.quizes.pregunta;
+			req.quizes.respuesta = req.body.quizes.respuesta;
 
+			req.quizes
+				.validate()
+				.then(function(err){
+					if(err){
+
+						data = {
+							layout:'layout',
+							title:env.name,
+							description:env.desc,
+							quizes:req.quizes,
+							errors:err.errors,
+							temas:Temas
+						};
+
+						// Salida.
+						res.render('quizes/editar',data);
+
+					} else {
+						
+						req.quizes
+							.save({fields:['tema','pregunta','respuesta']})
+							.then(function(){
+								res.redirect('/quizes');		
+							});
+						
+					}
+				});
+
+		})
+		.catch(function(){
+			res.redirect('/');
+		});
 };
 
 exports.eliminarDELETE = function(req,res,next){
@@ -226,5 +336,61 @@ exports.eliminarDELETE = function(req,res,next){
 				next(err);
 			
 			});
+
+};
+
+exports.filtrarPOST = function(req,res,next){
+
+	var tema = req.params.tema;
+
+	if(tema!='todos'){
+		model.Quiz.findAll({
+				attributes:['tema'],
+				group:['tema'],
+				order:[['tema']]
+			})
+			.then(function(temas){
+
+				var Temas = [];
+				for(i in temas){
+					temas[i].tema[0].toUpperCase();
+					Temas[i] = temas[i].tema; 
+				}
+
+					model.Quiz.findAll({
+						where:{tema:{$like:tema}},
+						order:[['pregunta','ASC']]
+					})
+					.then(function(quizes){
+
+						// Proceso.
+						data = {
+							layout:'layout',
+							title:env.name,
+							description:env.desc,
+							search:req.body.search,
+							quizes:{},
+							errors:[],
+							tema:tema,
+							temas:Temas
+						};
+
+						if(quizes) data.quizes=quizes;
+
+						// Salida.
+						res.render('quizes/tema',data);
+
+					})
+					.catch(function(){
+						res.redirect('/quizes');
+					});
+
+			})
+			.catch(function(){
+				res.redirect('/');
+			});
+	} else {
+		res.redirect('/quizes');
+	}
 
 };

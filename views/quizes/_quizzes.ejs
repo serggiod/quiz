@@ -1,0 +1,53 @@
+<center>
+	<form id="formFiltrar" method="POST" action="/quizes/tema/todos">
+		Tema: 
+			<select name="tema"  onchange="createPathTema(this)">
+				<option value="todos">Todos</option>
+				<% var i; for(i in temas){ %>
+					<option value="<%= temas[i] %>" class="upper"><%= temas[i] %></option>
+				<% } %>
+			</select>
+			<a>
+				<button type="submit">Cambiar</button>
+			</a>
+	</form>
+</center>
+<br/>
+<center>
+	<table align="center">
+		<% var i; for(i=0; i < quizes.length; i++) { %>
+		<tr>
+			<td align="center"><a href="/quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a><span class="tema"></span></td>
+			<td><a href="/quizes/<%= quizes[i].id %>/editar"><button type="button">Editar</button></a></td>
+			<td>
+				<form method="POST" action="/quizes/<%= quizes[i].id %>?_method=delete">
+					<button type="submit" onclick="return confirm('¿Esta seguro que desea eliminar la pregunta: <%= quizes[i].pregunta %>?');">
+						Borrar
+					</button>
+					
+				</form>
+			</td>
+		</tr>
+		<% }  %>
+	</table>
+
+	<br/>
+
+	<a href="/quizes/nuevo">
+		<button type="button">Crear Pregunta</button>
+	</a>
+
+	<br/><br/>
+	<p>
+		<a href="/">Volver atrás</a>
+	</p>
+</center>
+
+<!-- Función para crear path de temas. -->
+<script>
+	function createPathTema(select){
+		tema = select.options[select.selectedIndex].value.toString().toLowerCase();
+		form = document.getElementById('formFiltrar');
+		form.action='/quizes/tema/'+tema;
+	} 
+</script>

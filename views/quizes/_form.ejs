@@ -11,9 +11,43 @@
 	</label>
 </p>
 <p>
+	<Label>
+		<strong>Tema: </strong><br/>
+		<select id="selTema" name="quizes[tema]" onchange="controlarTema(this)">
+			
+			<% var i; for(i in temas){ %>
+				<% var sel = ''; %>
+				<% if(quizes.tema===temas[i]) sel='selected="true"';%>
+				<option value="<%= temas[i] %>" class="upper" <%= sel %>><%= temas[i] %></option>
+			<% } %>
+			<option value="nuevo">Nuevo tema</option>
+		</select><br/>
+		<input type="text" id="txtTema" name="quizes[tema]" placeholder="Nuevo tema" value="" disabled="true" onblur="controlarNuevoTema(this)" class="upper" />
+	</label>
+</p>
+<p>
 	<label>
 		<strong>Acción: </strong><br/>
 		<a href="/quizes"><button type="button">Cancelar</button></a> 
 		<input type="submit" value="Enviar"/>
 	</label>
 </p>
+<script>
+	function controlarTema(select){
+		tema = select.options[select.selectedIndex].value;
+		if(tema==='nuevo'){
+			txtTema = document.getElementById('txtTema');
+			txtTema.disabled=false;
+			select.disabled=true;
+		}
+	}
+
+	function controlarNuevoTema(txt){
+		tema = txt.value;
+		if(tema===''){
+			selTema = document.getElementById('selTema');
+			selTema.disabled=false;
+			txt.disabled=true;	
+		}
+	}
+</script>

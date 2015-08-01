@@ -1,29 +1,3 @@
 <h3>Elija una Pregunta</h3>
 <br/>
-<center>
-	<table align="center">
-		<% var i; for(i=0; i < quizes.length; i++) { %>
-		<tr>
-			<td><a href="/quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
-			<td><a href="/quizes/<%= quizes[i].id %>/editar"><button type="button">Editar</button></a></td>
-			<td>
-				<form method="POST" action="/quizes/<%= quizes[i].id %>?_method=delete">
-					<button type="submit" onclick="return confirm('¿Esta seguro que desea eliminar la pregunta: <%= quizes[i].pregunta %>?');">
-						Borrar
-					</button>
-					
-				</form>
-			</td>
-		</tr>
-		<% }  %>
-	</table>
-
-	<a href="/quizes/nuevo">
-		<button type="button">Crear Pregunta</button>
-	</a>
-
-	<br/><br/>
-	<p>
-		<a href="/">Volver atrás</a>
-	</p>
-</center>
+<% include _quizzes.ejs %>
