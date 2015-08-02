@@ -368,7 +368,7 @@ exports.filtrarGET = function(req,res,next){
 							layout:'layout',
 							title:env.name,
 							description:env.desc,
-							search:req.body.search,
+							search:req.params.tema,
 							quizes:{},
 							errors:[],
 							tema:tema,
