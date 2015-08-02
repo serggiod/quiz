@@ -198,6 +198,7 @@ exports.nuevoPOST = function(req,res) {
 			}
 
 			// Proceso.
+			req.body.quizes.tema.toLowerCase();
 			var quiz = model.Quiz.build(req.body.quizes);
 
 			quiz
@@ -285,7 +286,7 @@ exports.editarPUT = function(req,res){
 				Temas[i] = temas[i].tema; 
 			}
 			// Proceso.
-			req.quizes.tema = req.body.quizes.tema;
+			req.quizes.tema = req.body.quizes.tema.toLowerCase();
 			req.quizes.pregunta = req.body.quizes.pregunta;
 			req.quizes.respuesta = req.body.quizes.respuesta;
 
@@ -341,7 +342,7 @@ exports.eliminarDELETE = function(req,res,next){
 
 exports.filtrarGET = function(req,res,next){
 
-	var tema = req.params.tema;
+	var tema = req.params.tema.toLowerCase();
 
 	if(tema!='todos'){
 		model.Quiz.findAll({
