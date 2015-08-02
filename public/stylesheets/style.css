@@ -4,13 +4,14 @@ body {font:16px Georgia,Serif;}
 #page-wrap{margin:2% auto; color:white;}
 #page-wrap > .main{border:1px solid #999; padding:1%; margin-bottom:1px; color:black;}
 
-#formSearch{position:relative;top:-15px;}
+#formSearch{width:220px;position:relative;top:-15px;left:30px;}
+
 section > div{padding:20px;}
 header, nav, section{background:#eee; text-align:center;}
 footer{background:#eee; text-align:center;}
 
 nav span{margin:0px 10px 0px 0px;}
-
+ #s1{overflow: scroll;}
 #errorMsgs{color:#f61; font-size:smaller;}
 
 .tema{

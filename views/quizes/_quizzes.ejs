@@ -1,16 +1,14 @@
 <center>
-	<form id="formFiltrar" method="POST" action="/quizes/tema/todos">
-		Tema: 
-			<select name="tema"  onchange="createPathTema(this)">
-				<option value="todos">Todos</option>
-				<% var i; for(i in temas){ %>
-					<option value="<%= temas[i] %>" class="upper"><%= temas[i] %></option>
-				<% } %>
-			</select>
-			<a>
-				<button type="submit">Cambiar</button>
-			</a>
-	</form>
+	Tema: 
+		<select id="selTema">
+			<option value="todos">Todos</option>
+			<% var i; for(i in temas){ %>
+				<option value="<%= temas[i] %>" class="upper"><%= temas[i] %></option>
+			<% } %>
+		</select>
+		<a>
+			<button type="button" onclick="submitTema()">Cambiar</button>
+		</a>
 </center>
 <br/>
 <center>
@@ -39,15 +37,6 @@
 
 	<br/><br/>
 	<p>
-		<a href="/">Volver atrás</a>
+		<a href="/quizes">Volver atrás</a>
 	</p>
 </center>
-
-<!-- Función para crear path de temas. -->
-<script>
-	function createPathTema(select){
-		tema = select.options[select.selectedIndex].value.toString().toLowerCase();
-		form = document.getElementById('formFiltrar');
-		form.action='/quizes/tema/'+tema;
-	} 
-</script>

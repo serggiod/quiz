@@ -51,7 +51,7 @@ exports.index = function(req,res,next) {
 
 };
 
-exports.search = function(req,res,next) {
+exports.buscarGET = function(req,res,next) {
 
 	model.Quiz.findAll({
 			attributes:['tema'],
@@ -65,7 +65,7 @@ exports.search = function(req,res,next) {
 				Temas[i] = temas[i].tema; 
 			}
 
-			var string = ('%'+req.body.search+'%').replace(/\ /g,'%');
+			var string = ('%'+req.params.string+'%').replace(/\ /g,'%');
 
 			model.Quiz.findAll({
 					where:{pregunta:{$like:string}},
@@ -78,7 +78,7 @@ exports.search = function(req,res,next) {
 						layout:'layout',
 						title:env.name,
 						description:env.desc,
-						search:req.body.search,
+						search:req.params.string,
 						quizes:{},
 						errors:[],
 						temas:Temas
@@ -339,7 +339,7 @@ exports.eliminarDELETE = function(req,res,next){
 
 };
 
-exports.filtrarPOST = function(req,res,next){
+exports.filtrarGET = function(req,res,next){
 
 	var tema = req.params.tema;
 

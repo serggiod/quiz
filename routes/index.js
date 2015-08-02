@@ -9,8 +9,8 @@ router.get('/',index_controller.index);
 /* GET: Ir la lista de preguntas. */
 router.get('/quizes',quiz_controller.index);
 
-/* POST: Ir a la lsita de preguntas con una busqueda. */
-router.post('/quizes',quiz_controller.search);
+/* GET: Ir a la lsita de preguntas con una busqueda. */
+router.get('/quizes/buscar/:string',quiz_controller.buscarGET);
 
 
 // PARAMS: Cuando llegue quizId ejecutar load:
@@ -41,8 +41,8 @@ router.put('/quizes/:quizId(\\d+)',quiz_controller.editarPUT);
 router.delete('/quizes/:quizId(\\d+)',quiz_controller.eliminarDELETE);
 
 
-/* POST: Filtrar, ir a la página de filtrar preguntas (proceso). */
-router.post('/quizes/tema/:tema',quiz_controller.filtrarPOST);
+/* GET: Filtrar, ir a la página de filtrar preguntas (proceso). */
+router.get('/quizes/tema/:tema',quiz_controller.filtrarGET);
 
 /* GET: Ir la página de créditos. */
 router.get('/author',index_controller.author);
