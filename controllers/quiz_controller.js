@@ -198,7 +198,7 @@ exports.nuevoPOST = function(req,res) {
 			}
 
 			// Proceso.
-			req.body.quizes.tema.toLowerCase();
+			req.body.quizes.tema = req.body.quizes.tema.toLowerCase();
 			var quiz = model.Quiz.build(req.body.quizes);
 
 			quiz

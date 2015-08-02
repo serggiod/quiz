@@ -10,14 +10,14 @@
 
         // Función para buscar preguntas por GET.
         function buscarPregunta(){
-            regexp = new RegExp('[A-Za-z0-9áéíóú]','g');
+            regexp = new RegExp('[A-Za-z0-9áéíóúñ]','g');
             txtBuscar = document.getElementById('txtBuscar').value.toString().match(regexp).join('').toString();
             document.location = '/quizes/buscar/'+txtBuscar;
         }
     
         // Función para buscar temas por GET.
         function submitTema(){
-            regexp = new RegExp('[A-Za-z0-9áéíóú]','g');
+            regexp = new RegExp('[A-Za-z0-9áéíóúñ]','g');
             select = document.getElementById('selTema');
             tema = select.options[select.selectedIndex].value.match(regexp).join('').toString().toLowerCase();
             document.location='/quizes/tema/'+tema;
