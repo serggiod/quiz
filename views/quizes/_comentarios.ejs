@@ -1,0 +1,10 @@
+<center><h4>Comentarios:</h4></center>
+
+<% for (i in comentarios){ %>
+	<p><%= comentarios[i].texto %></p>
+<% } %>
+<center>
+	<a href="/quizes/<%= id %>/comment"><button type="button">Nuevo Comentario</button></a>
+	|
+	<a href="/quizes"><button type="">Volver atrás</button></a>
+</center>

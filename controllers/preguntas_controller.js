@@ -2,7 +2,10 @@ var model = require('../models/models');
 var env   = require('../environment')();
 
 exports.load  = function(req,res,next,quizId){
-	model.Quiz.findById(quizId)
+	model.Quiz.find({
+			where:{id:Number(quizId)},
+			include:[{model:model.Comment}]
+		})
 		.then(function(quizes){
 			if(quizes){
 				req.quizes = quizes;
@@ -110,6 +113,7 @@ exports.question = function(req,res) {
 		description:env.desc,
 		id:req.quizes.id,
 		pregunta:req.quizes.pregunta,
+		comentarios:req.quizes.Comments,
 		errors:[]
 	};
 
@@ -127,6 +131,7 @@ exports.answer = function(req,res) {
 		description:env.desc,
 		id:req.quizes.id,
 		resultado:'',
+		comentarios:req.quizes.Comments,
 		errors:[]
 	};
 

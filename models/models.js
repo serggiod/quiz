@@ -4,8 +4,8 @@ var path = require('path');
 var Sequelize = require('sequelize');
 
 // Matchear la url de la DB.
-// process.env.DATABASE_URL='sqlite://:@:/';
-// process.env.DATABASE_STORAGE='quiz.sqlite';
+process.env.DATABASE_URL='sqlite://:@:/';
+process.env.DATABASE_STORAGE='quiz.sqlite';
 
 var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var dbname = (url[6] || null);
@@ -28,10 +28,19 @@ var sequelize = new Sequelize(dbname,dbuser,dbpswd,{
 });
 
 // Importar la definición de la tabla quiz.
-var Quiz = sequelize.import(path.join(__dirname,'quiz'));
+var Quiz    = sequelize.import(path.join(__dirname,'quiz'));
+var Comment = sequelize.import(path.join(__dirname,'comment'));
+
+// Establecer relaciones.
+
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
 
 // Exportar la definición.
-exports.Quiz = Quiz;
+exports.Quiz    = Quiz;
+exports.Comment = Comment;
+
+
 
 // sequelize.sync() crea y sincroniza la tabla quiz;
 sequelize.sync()
@@ -47,7 +56,20 @@ sequelize.sync()
 							respuesta:'Roma'
 						})
 						.then(function(){
-							console.log('Base de datos inicializada.');
+							console.log('Tabla Quizzes creada.');
+						});
+				}
+			});
+		Comment
+			.count()
+			.then(function(count){
+				if(count===0){
+					Comment
+						.create({
+							texto:'comentario'
+						})
+						.then(function(){
+							console.log('Tabla Comments creada.');
 						});
 				}
 			});
