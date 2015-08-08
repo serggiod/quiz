@@ -1,7 +1,7 @@
 var controller = require('../controllers/preguntas_controller');
 var express    = require('express');
 var router     = express.Router();
-
+var session    = require('../controllers/session_controller');
 
 /* GET: Ir la lista de preguntas. */
 router.get('/quizes',controller.index);
@@ -20,19 +20,20 @@ router.get('/quizes/:quizId(\\d+)/answer',controller.answer);
 
 
 /* GET: Ir la página de nueva pregunta (Formulario). */
-router.get('/quizes/nuevo',controller.nuevoGET);
+router.get('/quizes/nuevo',session.loginRequired,controller.nuevoGET);
 
 /* POST: Ir la página de nueva pregunta (Carga). */
-router.post('/quizes/nuevo',controller.nuevoPOST);
+router.post('/quizes/nuevo',session.loginRequired,controller.nuevoPOST);
 
 /* GET: Ir a la página de editar pregunta (formulario). */
-router.get('/quizes/:quizId(\\d+)/editar',controller.editarGET);
+router.get('/quizes/:quizId(\\d+)/editar',session.loginRequired,controller.editarGET);
 
 /* PUT: Ir a la página de editar pregunta (carga). */
-router.put('/quizes/:quizId(\\d+)',controller.editarPUT);
+router.put('/quizes/:quizId(\\d+)',session.loginRequired,controller.editarPUT);
 
 /* DELETE: Ir a la página de eliminar pregunta (proceso). */
-router.delete('/quizes/:quizId(\\d+)',controller.eliminarDELETE);
+router.delete('/quizes/:quizId(\\d+)',session.loginRequired,controller.eliminarDELETE);
+
 
 /* GET: Filtrar, ir a la página de filtrar preguntas (proceso). */
 router.get('/quizes/tema/:tema',controller.filtrarGET);
