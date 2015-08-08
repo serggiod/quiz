@@ -2,13 +2,14 @@ var env   = require('../environment')();
 var model = require('../models/models');
 
 module.exports.commentGET = function(req,res){
-	console.log('Yo');
+
 	// Proceso.
 	data = {
 		layout:'layout',
 		title:env.name,
 		description:env.desc,
 
+		session:req.session,
 		quizId:req.params.quizId,
 		errors:[]
 	};
@@ -35,6 +36,7 @@ module.exports.commentPOST = function(req,res){
 					description:env.desc,
 					search:req.params.string,
 
+					session:req.session,
 					quizId:req.params.quizId,
 					errors:[]
 				};

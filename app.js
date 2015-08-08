@@ -4,6 +4,7 @@ var favicon        = require('serve-favicon');
 var logger         = require('morgan');
 var cookieParser   = require('cookie-parser');
 var bodyParser     = require('body-parser');
+var expressSession = require('express-session');
 var partials       = require('express-partials');
 var methodOverride = require('method-override');
 
@@ -11,6 +12,7 @@ var methodOverride = require('method-override');
 var index       = require('./routes/index');
 var preguntas   = require('./routes/preguntas');
 var comentarios = require('./routes/comentarios');
+var session     = require('./routes/session');
 
 // Instanciar aplicación express.
 var app   = express();
@@ -28,14 +30,34 @@ app.use(favicon(__dirname+'/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(cookieParser());
+app.use(cookieParser('Quiz_2015'));
+app.use(expressSession());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Instalar helper dinámico.
+app.use(function(req,res,next){
+    
+    // Guardar path en session.redir
+    regexp = new RegExp('/login'|'/logout');
+    if(!req.path.match(regexp)){
+        req.session.redir = req.path;
+        console.log(req.session.redir);
+    }
+
+    // Hacer visible req.session en las vistas.
+    res.locals.session = req.session;
+    next();
+
+});
+
+
 
 // Cargar ruteadores.
 app.use('/',index);
 app.use('/',preguntas);
 app.use('/',comentarios);
+app.use('/',session);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
