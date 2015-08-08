@@ -55,3 +55,36 @@ module.exports.commentPOST = function(req,res){
 			next(err);
 		});
 };
+
+module.exports.load = function(req,res,next,commentId){
+	model.Comment
+		.find({
+			where:{
+				id:Number(commentId)
+			}
+		})
+		.then(function(comment){
+			if(comment){
+				req.comment = comment;
+				next();
+			} else {
+				next(next(new Error('No existe el comentario commentId='+commentId)));
+			}
+			
+		})
+		.catch(function(error){
+			next(error);
+		});
+};
+
+module.exports.commentPUBLISH = function(req,res,next){
+	req.comment.publicado=true;
+	req.comment
+		.save({fields:['publicado']})
+		.then(function(){
+			res.redirect('/quizes/'+req.params.quizId);
+		})
+		.catch(function(error){
+			next(error);
+		});
+};

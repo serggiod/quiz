@@ -1,7 +1,13 @@
 <center><h4>Comentarios:</h4></center>
 
 <% for (i in comentarios){ %>
-	<p><%= comentarios[i].texto %></p>
+	<% if(comentarios[i].publicado || session.user) {%>
+		<p><%= comentarios[i].texto %>
+		<% if(session.user && !comentarios[i].publicado){ %>
+			<a href="/quizes/<%= id %>/comment/<%= comentarios[i].id %>/publish"><button type="button">Publicar</button></a>
+		<% } %>
+		</p><br/>
+	<% } %>
 <% } %>
 <center>
 	<a href="/quizes/<%= id %>/comment"><button type="button">Nuevo Comentario</button></a>
