@@ -20,23 +20,25 @@ router.get('/quizes/:quizId(\\d+)/answer',controller.answer);
 
 
 /* GET: Ir la página de nueva pregunta (Formulario). */
-router.get('/quizes/nuevo',session.loginRequired,controller.nuevoGET);
+router.get('/quizes/nuevo',session.loginRequired,session.loginStatus,controller.nuevoGET);
 
 /* POST: Ir la página de nueva pregunta (Carga). */
-router.post('/quizes/nuevo',session.loginRequired,controller.nuevoPOST);
+router.post('/quizes/nuevo',session.loginRequired,session.loginStatus,controller.nuevoPOST);
 
 /* GET: Ir a la página de editar pregunta (formulario). */
-router.get('/quizes/:quizId(\\d+)/editar',session.loginRequired,controller.editarGET);
+router.get('/quizes/:quizId(\\d+)/editar',session.loginRequired,session.loginStatus,controller.editarGET);
 
 /* PUT: Ir a la página de editar pregunta (carga). */
-router.put('/quizes/:quizId(\\d+)',session.loginRequired,controller.editarPUT);
+router.put('/quizes/:quizId(\\d+)',session.loginRequired,session.loginStatus,controller.editarPUT);
 
 /* DELETE: Ir a la página de eliminar pregunta (proceso). */
-router.delete('/quizes/:quizId(\\d+)',session.loginRequired,controller.eliminarDELETE);
+router.delete('/quizes/:quizId(\\d+)',session.loginRequired,session.loginStatus,controller.eliminarDELETE);
 
 
 /* GET: Filtrar, ir a la página de filtrar preguntas (proceso). */
 router.get('/quizes/tema/:tema',controller.filtrarGET);
+
+/* GET: Estadisticas de la página. */
 
 // Exportar ruteador.
 module.exports = router;

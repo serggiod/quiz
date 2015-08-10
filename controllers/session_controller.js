@@ -30,7 +30,9 @@ module.exports.loginPOST = function(req,res,next){
 			return;
 		}
 
+		date = new Date();
 		req.session.user = {id:user.id,username:user.username};
+		req.session.lastTime = date.getTime();
 		res.redirect('/quizes');			
 
 	});
@@ -39,13 +41,31 @@ module.exports.loginPOST = function(req,res,next){
 
 module.exports.logoutGET = function(req,res,next){
 	delete req.session.user;
-	console.log(req.session.user);
 	res.redirect('/login');
 };
 
 module.exports.loginRequired = function(req,res,next){
 	if(req.session.user){
 		next();
+	} else {
+		res.redirect('/login');
+	}
+};
+
+module.exports.loginStatus = function(req,res,next){
+	if(req.session.user){
+		if(req.session.lastTime){
+			date = new Date();
+			newTime = date.getTime();
+			timeDif = newTime - req.session.lastTime;
+			if(timeDif<=((1000*60)*2)){
+				next();
+			} else {
+				res.redirect('/logout');
+			}
+		} else {
+			res.redirect('/logout');
+		}
 	} else {
 		res.redirect('/login');
 	}
