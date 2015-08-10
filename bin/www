@@ -6,7 +6,8 @@
 
 var app   = require('../app');
 var debug = require('debug')('quiz:server');
-var http  = require('http');
+var https = require('https');
+var pem   = require('pem');
 var env   = require('../environment')();
 
 /**
@@ -14,83 +15,95 @@ var env   = require('../environment')();
  */
 
 /*No Olvidar Heroku asigna arbitrariamente el puerto de respuesta. */
-var port = normalizePort(process.env.PORT || env.port);
-app.set('port',port);
-
-//app.set('ETag',env.etag);
-//app.set('env',env.env);
-app.set('x-powered-by',env.xpby);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+certificate = {
+  organization:'Legislatura de Jujuy',
+  organizationUnit:'Government',
+  hash:'sha256',
+  country:'AR',
+  state:'Jujuy',
+  locality:'San Salvador de Jujuy',
+  clientKeyPassword:'oauth256KZZ288',
+  selfSigned:true,
+  selfSigned:true,
+  keyBitsize:2048,
+  days:365
+};
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+pem.createCertificate(certificate,function(err, keys){
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+  var port = normalizePort(process.env.PORT || env.port);
+  app.set('port',port);
 
-/**
- * Normalize a port into a number, string, or false.
- */
+  function normalizePort(val) {
+    var port = parseInt(val, 10);
 
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+    if (isNaN(port)) {
+      // named pipe
+      return val;
+    }
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
+    if (port >= 0) {
+      // port number
+      return port;
+    }
+
+    return false;
   }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+  /**
+   * Event listener for HTTP server "error" event.
+   */
 
-  return false;
-}
-
-/**
- * Event listener for HTTP server "error" event.
- */
-
-function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
+  function onError(error) {
+    if (error.syscall !== 'listen') {
       throw error;
+    }
+
+    var bind = typeof port === 'string'
+      ? 'Pipe ' + port
+      : 'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+      case 'EACCES':
+        console.error(bind + ' requires elevated privileges');
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        console.error(bind + ' is already in use');
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
   }
-}
 
-/**
- * Event listener for HTTP server "listening" event.
- */
+    /**
+     * Event listener for HTTP server "listening" event.
+     */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+    function onListening() {
+      var addr = server.address();
+      var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+      debug('Listening on ' + bind);
+    }
+
+    options = {
+      key: keys.serviceKey,
+      cert: keys.certificate
+    };
+
+    var server = https.createServer(options,app)
+
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+
+});
