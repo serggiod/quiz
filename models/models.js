@@ -4,8 +4,8 @@ var path = require('path');
 var Sequelize = require('sequelize');
 
 // Matchear la url de la DB.
-process.env.DATABASE_URL='sqlite://:@:/';
-process.env.DATABASE_STORAGE='quiz.sqlite';
+//process.env.DATABASE_URL='sqlite://:@:/';
+//process.env.DATABASE_STORAGE='quiz.sqlite';
 
 var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var dbname = (url[6] || null);
@@ -34,7 +34,12 @@ var Comment = sequelize.import(path.join(__dirname,'comment'));
 // Establecer relaciones.
 
 Comment.belongsTo(Quiz);
-Quiz.hasMany(Comment);
+Quiz.hasMany(Comment, {
+'constraints': true,
+'onUpdate': 'cascade',
+'onDelete': 'cascade',
+'hooks': true
+});
 
 // Exportar la definición.
 exports.Quiz    = Quiz;

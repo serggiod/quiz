@@ -409,3 +409,49 @@ exports.filtrarGET = function(req,res,next){
 	}
 
 };
+
+exports.estadisticasGET = function(req,res,next){
+	
+	var totalPreguntas=0;
+	var totalComentarios=0;
+	var promedioComentariosPorPreguntas=0;
+	var totalPreguntasSinComentarios=0;
+	var totalPreguntasConComentarios=0;
+
+	model.Quiz
+		.findAll({include:[{all:true}]})
+		.then(function(rows){
+			totalPreguntas = rows.length;
+
+			for(i in rows){
+				if(rows[i].Comments.length) totalPreguntasConComentarios++;
+			}
+
+			model.Comment
+				.count()
+				.then(function(count){
+					totalComentarios = count;
+
+						totalPreguntasSinComentarios = totalPreguntas - totalPreguntasConComentarios;
+						promedioComentariosPorPreguntas = (totalComentarios/totalPreguntas).toFixed(2);
+
+						data = {
+							layout:'layout',
+							title:env.name,
+							description:env.desc,
+							session:req.session,
+							errors:[],
+							totalPreguntas:totalPreguntas.toString(),
+							totalComentarios:totalComentarios.toString(),
+							promedioComentariosPorPreguntas:promedioComentariosPorPreguntas.toString(),
+							totalPreguntasSinComentarios:totalPreguntasSinComentarios.toString(),
+							totalPreguntasConComentarios:totalPreguntasConComentarios.toString()
+						};
+
+						res.render('quizes/estadisticas',data);
+
+				});
+		});
+
+
+}

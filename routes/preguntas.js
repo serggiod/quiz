@@ -39,6 +39,6 @@ router.delete('/quizes/:quizId(\\d+)',session.loginRequired,session.loginStatus,
 router.get('/quizes/tema/:tema',controller.filtrarGET);
 
 /* GET: Estadisticas de la página. */
-
+router.get('/estadisticas',controller.estadisticasGET);
 // Exportar ruteador.
 module.exports = router;
