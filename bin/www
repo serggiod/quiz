@@ -21,8 +21,8 @@ var env   = require('../environment')();
  */
 
 certificate = {
-  organization:'Legislatura de Jujuy',
-  organizationUnit:'Government',
+  organization:'QUIZ JUEGO DE PREGUNTAS',
+  organizationUnit:'Games',
   hash:'sha256',
   country:'AR',
   state:'Jujuy',
@@ -36,6 +36,7 @@ certificate = {
 
 pem.createCertificate(certificate,function(err, keys){
 
+  //var port = normalizePort(process.env.PORT || env.port);
   var port = normalizePort(process.env.PORT || env.port);
   app.set('port',port);
 
@@ -102,7 +103,7 @@ pem.createCertificate(certificate,function(err, keys){
 
     var server = https.createServer(options,app)
 
-    server.listen(port);
+    server.listen(port || env.port);
     server.on('error', onError);
     server.on('listening', onListening);
 

@@ -4,8 +4,8 @@ var path = require('path');
 var Sequelize = require('sequelize');
 
 // Matchear la url de la DB.
-//process.env.DATABASE_URL='sqlite://:@:/';
-//process.env.DATABASE_STORAGE='quiz.sqlite';
+// process.env.DATABASE_URL='sqlite://:@:/';
+// process.env.DATABASE_STORAGE='quiz.sqlite';
 
 var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var dbname = (url[6] || null);
@@ -45,9 +45,9 @@ Quiz.hasMany(Comment, {
 exports.Quiz    = Quiz;
 exports.Comment = Comment;
 
-
-
 // sequelize.sync() crea y sincroniza la tabla quiz;
+sequelize.sync();
+/*
 sequelize.sync()
 	.then(function(){
 		Quiz
@@ -79,3 +79,4 @@ sequelize.sync()
 				}
 			});
 	});
+*/
